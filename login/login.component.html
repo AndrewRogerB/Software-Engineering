@@ -1,1 +1,22 @@
-<p>login works!</p>
+<div fxLayoutAlign = "center center" style="min-height: 60%">
+  <mat-card fxFlex ="25">
+    <form fxLayoutAlign="stretch" fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder="Username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password">
+      </mat-form-field>
+      <button mat-raised-button type="submit">Login</button>
+      <div fxLayoutAlign = "center right">
+        <a href="#" routerLink="/register" class="/register-page">Register</a>
+      </div>
+      <div fxLayoutAlign = "end">
+        <a href="#" routerLink="/register" class="/register-page">Forgot Password?</a>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<!--<a href="#" routerLink="/register" class="/register-page">Sign UP</a>-->
+
