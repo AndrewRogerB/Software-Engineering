@@ -1,0 +1,13 @@
+<header>
+  <div class="container">
+    <a href="#" routerLink="home" class="logo"><font size="6">Equals</font><font size="1">debate civilly</font></a>
+    <nav>
+      <ul>
+        <li>
+          <a *ngIf="!isAuthenticated" href="#" routerLink="login" class="/login-page"><font size="4.5">Login</font></a>
+          <a *ngIf="isAuthenticated" (click)="logout()" href="#" routerLink="login" class="/login-page"><font size="4.5">Log out</font></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
