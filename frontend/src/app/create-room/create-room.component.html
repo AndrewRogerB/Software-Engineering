@@ -1,0 +1,20 @@
+<div fxLayoutAlign = "center center" style="min-height: 60%">
+  <mat-card fxFlex ="25">
+    <form
+      [formGroup]="roomForm"
+      fxLayoutAlign="stretch" fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder="Topic" formControlName="topic">
+      </mat-form-field>
+      <mat-radio-group>
+        <mat-radio-button value="1">10 Minutes</mat-radio-button>
+        <mat-radio-button value="2">20 Minutes</mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field>
+        <input matInput placeholder="Your Stance" formControlName="stance">
+      </mat-form-field>
+      <button mat-raised-button type="submit">Create</button>
+    </form>
+  </mat-card>
+</div>
+
