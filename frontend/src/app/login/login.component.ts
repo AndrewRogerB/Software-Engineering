@@ -12,11 +12,6 @@ gsap.registerPlugin(MorphSVGPlugin, DrawSVGPlugin, MotionPathPlugin);
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements AfterViewInit {
-  leftEyeOrigin: SVGPathElement | null = null;
-  rightEyeOrigin: SVGPathElement | null = null;
-  @ViewChild('leftEye', { static: false }) leftEye!: ElementRef;
-  @ViewChild('rightEye', { static: false }) rightEye!: ElementRef;
-  // Add the following properties to your LoginComponent class
   emailLabel!: HTMLElement;
   email!: HTMLElement;
   passwordLabel!: HTMLElement;
