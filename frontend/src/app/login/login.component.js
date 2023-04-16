@@ -6,8 +6,7 @@ function initLoginAnimation() {
   var eyeLCoords, eyeRCoords, noseCoords, mouthCoords, eyeLAngle, eyeLX, eyeLY, eyeRAngle, eyeRX, eyeRY, noseAngle, noseX, noseY, mouthAngle, mouthX, mouthY, mouthR, chinX, chinY, chinS, faceX, faceY, faceSkew, eyebrowSkew, outerEarX, outerEarY, hairX, hairS;
 
   function calculateFaceMove(e) {
-    var
-      carPos = email.selectionEnd,
+    let carPos = email.selectionEnd,
       div = document.createElement('div'),
       span = document.createElement('span'),
       copyStyle = getComputedStyle(email),

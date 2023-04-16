@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import {gsap, Power2} from 'gsap';
+import {Expo, gsap, Power2} from 'gsap';
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
@@ -102,8 +102,49 @@ export class LoginComponent implements AfterViewInit {
     this.password = document.querySelector('#loginPassword')!;
 
   }
-  onEmailInput = (e: Event) => {
+
+  calculateFaceMove = (e: Event) => {
     // Add the code from login.component.js here
+  };
+
+  onEmailInput = (e: Event) => {
+    this.calculateFaceMove(e);
+    var value = this.email.value;
+    this.curEmailIndex = value.length;
+
+    // very crude email validation to trigger effects
+    if(this.curEmailIndex > 0) {
+      if(this.mouthStatus == "small") {
+        this.mouthStatus = "medium";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthMediumBG, shapeIndex: 8, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        this.eyeScale = .85;
+      }
+      if(value.includes("@")) {
+        this.mouthStatus = "large";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthLargeBG, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 3, y: -2, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {y: 2, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .65, scaleY: .65, ease: Expo.easeOut, transformOrigin: "center center"});
+        this.eyeScale = .65;
+      } else {
+        this.mouthStatus = "medium";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthMediumBG, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        this.eyeScale = .85;
+      }
+    } else {
+      this.mouthStatus = "small";
+      TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthSmallBG, shapeIndex: 9, ease: Expo.easeOut});
+      TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+      TweenMax.to(this.tongue, 1, {y: 0, ease: Expo.easeOut});
+      TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: 1, scaleY: 1, ease: Expo.easeOut});
+      this.eyeScale = 1;
+    }
   }
 
   onEmailFocus = (e: Event) => {
@@ -149,8 +190,6 @@ export class LoginComponent implements AfterViewInit {
   onPasswordToggleClick = (e: Event) => {
     // Add the code from login.component.js here
   }
-
-
 
   spreadFingers() {
     // Add the code from login.component.js here
