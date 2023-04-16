@@ -17,38 +17,38 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('leftEye', { static: false }) leftEye!: ElementRef;
   @ViewChild('rightEye', { static: false }) rightEye!: ElementRef;
   // Add the following properties to your LoginComponent class
-  emailLabel: HTMLElement;
-  email: HTMLElement;
-  passwordLabel: HTMLElement;
-  password: HTMLElement;
-  showPasswordCheck: HTMLElement;
-  showPasswordToggle: HTMLElement;
-  mySVG: HTMLElement;
-  twoFingers: HTMLElement;
-  armL: HTMLElement;
-  armR: HTMLElement;
-  eyeL: HTMLElement;
-  eyeR: HTMLElement;
-  nose: HTMLElement;
-  mouth: HTMLElement;
-  mouthBG: HTMLElement;
-  mouthSmallBG: HTMLElement;
-  mouthMediumBG: HTMLElement;
-  mouthLargeBG: HTMLElement;
-  mouthMaskPath: HTMLElement;
-  mouthOutline: HTMLElement;
-  tooth: HTMLElement;
-  tongue: HTMLElement;
-  chin: HTMLElement;
-  face: HTMLElement;
-  eyebrow: HTMLElement;
-  outerEarL: HTMLElement;
-  outerEarR: HTMLElement;
-  earHairL: HTMLElement;
-  earHairR: HTMLElement;
-  hair: HTMLElement;
-  bodyBG: HTMLElement;
-  bodyBGchanged: HTMLElement;
+  emailLabel!: HTMLElement;
+  email!: HTMLElement;
+  passwordLabel!: HTMLElement;
+  password!: HTMLElement;
+  showPasswordCheck!: HTMLElement;
+  showPasswordToggle!: HTMLElement;
+  mySVG!: HTMLElement;
+  twoFingers!: HTMLElement;
+  armL!: HTMLElement;
+  armR!: HTMLElement;
+  eyeL!: HTMLElement;
+  eyeR!: HTMLElement;
+  nose!: HTMLElement;
+  mouth!: HTMLElement;
+  mouthBG!: HTMLElement;
+  mouthSmallBG!: HTMLElement;
+  mouthMediumBG!: HTMLElement;
+  mouthLargeBG!: HTMLElement;
+  mouthMaskPath!: HTMLElement;
+  mouthOutline!: HTMLElement;
+  tooth!: HTMLElement;
+  tongue!: HTMLElement;
+  chin!: HTMLElement;
+  face!: HTMLElement;
+  eyebrow!: HTMLElement;
+  outerEarL!: HTMLElement;
+  outerEarR!: HTMLElement;
+  earHairL!: HTMLElement;
+  earHairR!: HTMLElement;
+  hair!: HTMLElement;
+  bodyBG!: HTMLElement;
+  bodyBGchanged!: HTMLElement;
 
   activeElement: any;
   curEmailIndex: any;
@@ -101,46 +101,48 @@ export class LoginComponent implements AfterViewInit {
   }
 
   initLoginAnimation() {
-    this.emailLabel = document.querySelector('#loginEmailLabel');
-    this.email = document.querySelector('#loginEmail');
-    this.passwordLabel = document.querySelector('#loginPasswordLabel');
-    this.password = document.querySelector('#loginPassword');
-    onUserNameFocus = (e: Event) => {
-      // Add the code from login.component.js here
-    };
+    this.emailLabel = document.querySelector('#loginEmailLabel')!;
+    this.email = document.querySelector('#loginEmail')!;
+    this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
+    this.password = document.querySelector('#loginPassword')!;
 
-    onUserNameBlur = (e: Event) => {
-      // Add the code from login.component.js here
-    };
-
-    onPasswordFocus = (e: Event) => {
-      // Add the code from login.component.js here
-    };
-
-    onPasswordBlur = (e: Event) => {
-      // Add the code from login.component.js here
-    };
-
-    onPasswordToggleChange = (e: Event) => {
-      // Add the code from login.component.js here
-    };
-
-    onPasswordToggleClick = (e: Event) => {
-      // Add the code from login.component.js here
-    };
-
-    spreadFingers() {
-      // Add the code from login.component.js here
-    }
-
-    closeFingers() {
-      // Add the code from login.component.js here
-    }
-
-    setEyePosition = (target: HTMLElement, eye: any, origin: any) => {
-      // Add the code from login.component.js here
-    };
   }
+  onUserNameFocus = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  onUserNameBlur = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  onPasswordFocus = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  onPasswordBlur = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  onPasswordToggleChange = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  onPasswordToggleClick = (e: Event) => {
+    // Add the code from login.component.js here
+  };
+
+  spreadFingers() {
+    // Add the code from login.component.js here
+  }
+
+  closeFingers() {
+    // Add the code from login.component.js here
+  }
+
+  setEyePosition = (target: HTMLElement, eye: any, origin: any) => {
+    // Add the code from login.component.js here
+  };
+
 
   // Add the updated methods from login.component.js
 }
