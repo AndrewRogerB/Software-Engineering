@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {Expo, gsap, Power2} from 'gsap';
+import {Expo, gsap, Power2, Quad} from 'gsap';
 import {MorphSVGPlugin} from 'gsap/MorphSVGPlugin';
 import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin';
 import {MotionPathPlugin} from 'gsap/MotionPathPlugin';
@@ -315,10 +315,24 @@ export class LoginComponent implements AfterViewInit {
   }
 
   coverEyes() {
+    gsap.killTweensOf([this.armL, this.armR]);
+    gsap.set([this.armL, this.armR], { visibility: "visible" });
+    gsap.to(this.armL, 0.45, { x: -93, y: 10, rotation: 0, ease: Quad.easeOut });
+    gsap.to(this.armR, 0.45, { x: -93, y: 10, rotation: 0, ease: Quad.easeOut, delay: 0.1 });
+    gsap.to(this.bodyBG, 0.45, { morphSVG: this.bodyBGchanged as any, ease: Quad.easeOut });
+    this.eyesCovered = true;
   }
 
   uncoverEyes() {
-    // Add the code from login.component.js here
+    gsap.killTweensOf([this.armL, this.armR]);
+    gsap.to(this.armL, 1.35, { y: 220, ease: Quad.easeOut });
+    gsap.to(this.armL, 1.35, { rotation: 105, ease: Quad.easeOut, delay: 0.1 });
+    gsap.to(this.armR, 1.35, { y: 220, ease: Quad.easeOut });
+    gsap.to(this.armR, 1.35, { rotation: -105, ease: Quad.easeOut, delay: 0.1, onComplete: () => {
+        gsap.set([this.armL, this.armR], { visibility: "hidden" });
+      }});
+    gsap.to(this.bodyBG, 0.45, { morphSVG: this.bodyBG as any, ease: Quad.easeOut });
+    this.eyesCovered = false;
   }
 
   resetFace() {
@@ -330,8 +344,22 @@ export class LoginComponent implements AfterViewInit {
     gsap.to([this.outerEarL, this.outerEarR, this.earHairL, this.earHairR, this.hair], 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
   }
 
-  startBlinking(delay: number) {
-    // Add the code from login.component.js here
+  startBlinking(delay?: number) {
+    if (delay) {
+      delay = this.getRandomInt(delay);
+    } else {
+      delay = 1;
+    }
+    this.blinking = gsap.to([this.eyeL, this.eyeR], 0.1, {
+      delay: delay,
+      scaleY: 0,
+      yoyo: true,
+      repeat: 1,
+      transformOrigin: "center center",
+      onComplete: () => {
+        this.startBlinking(12);
+      },
+    });
   }
 
   stopBlinking() {
