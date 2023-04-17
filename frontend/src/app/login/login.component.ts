@@ -17,7 +17,7 @@ export class LoginComponent implements AfterViewInit {
   passwordLabel!: HTMLElement;
   password!: HTMLInputElement;
   showPasswordCheck!: HTMLElement;
-  @ViewChild('showPasswordToggle', { static: true }) showPasswordToggle!: ElementRef<HTMLInputElement>;
+  showPasswordToggle!: HTMLElement;
   mySVG!: HTMLElement;
   twoFingers!: HTMLElement;
   armL!: HTMLElement;
@@ -289,7 +289,7 @@ export class LoginComponent implements AfterViewInit {
   onPasswordToggleChange = (e: Event) => {
     setTimeout(() => {
       // if checkbox is checked, show password
-      if (this.showPasswordToggle.nativeElement.checked) {
+      if ((e.target as HTMLInputElement).checked) {
         this.password.type = "text";
         this.spreadFingers();
 
@@ -413,7 +413,7 @@ export class LoginComponent implements AfterViewInit {
     this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
     this.password = document.querySelector('#loginPassword')!;
     this.showPasswordCheck = document.querySelector('#showPassword')!;
-    this.showPasswordToggle.nativeElement = document.querySelector('#showPasswordToggle')!;
+    this.showPasswordToggle = document.querySelector('#showPasswordToggle')!;
     this.mySVG = document.querySelector('.svgContainer')!;
     this.twoFingers = document.querySelector('.twoFingers')!;
     this.armL = document.querySelector('.armL')!;
@@ -463,8 +463,8 @@ export class LoginComponent implements AfterViewInit {
     this.showPasswordCheck.addEventListener('focus', this.onPasswordToggleFocus);
     this.showPasswordCheck.addEventListener('blur', this.onPasswordToggleBlur);
     this.showPasswordCheck.addEventListener('click', this.onPasswordToggleClick);
-    this.showPasswordToggle.nativeElement.addEventListener('mouseup', this.onPasswordToggleMouseUp);
-    this.showPasswordToggle.nativeElement.addEventListener('mousedown', this.onPasswordToggleMouseDown);
+    this.showPasswordToggle.addEventListener('mouseup', this.onPasswordToggleMouseUp);
+    this.showPasswordToggle.addEventListener('mousedown', this.onPasswordToggleMouseDown);
 
     // move arms to initial positions
     gsap.set(this.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
