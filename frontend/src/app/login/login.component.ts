@@ -156,18 +156,18 @@ export class LoginComponent implements AfterViewInit {
     this.hairX = Math.cos(this.mouthAngle) * 6;
     this.hairS = 1.2;
 
-    TweenMax.to(this.eyeL, 1, {x: -this.eyeLX , y: -this.eyeLY, ease: Expo.easeOut});
-    TweenMax.to(this.eyeR, 1, {x: -this.eyeRX , y: -this.eyeRY, ease: Expo.easeOut});
-    TweenMax.to(this.nose, 1, {x: -this.noseX, y: -this.noseY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
-    TweenMax.to(this.mouth, 1, {x: -this.mouthX , y: -this.mouthY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
-    TweenMax.to(this.chin, 1, {x: -this.chinX, y: -this.chinY, scaleY: this.chinS, ease: Expo.easeOut});
-    TweenMax.to(this.face, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.faceSkew, transformOrigin: "center top", ease: Expo.easeOut});
-    TweenMax.to(this.eyebrow, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.eyebrowSkew, transformOrigin: "center top", ease: Expo.easeOut});
-    TweenMax.to(this.outerEarL, 1, {x: this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
-    TweenMax.to(this.outerEarR, 1, {x: this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
-    TweenMax.to(this.earHairL, 1, {x: -this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
-    TweenMax.to(this.earHairR, 1, {x: -this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
-    TweenMax.to(this.hair, 1, {x: this.hairX, scaleY: this.hairS, transformOrigin: "center bottom", ease: Expo.easeOut});
+    gsap.to(this.eyeL, 1, {x: -this.eyeLX , y: -this.eyeLY, ease: Expo.easeOut});
+    gsap.to(this.eyeR, 1, {x: -this.eyeRX , y: -this.eyeRY, ease: Expo.easeOut});
+    gsap.to(this.nose, 1, {x: -this.noseX, y: -this.noseY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
+    gsap.to(this.mouth, 1, {x: -this.mouthX , y: -this.mouthY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
+    gsap.to(this.chin, 1, {x: -this.chinX, y: -this.chinY, scaleY: this.chinS, ease: Expo.easeOut});
+    gsap.to(this.face, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.faceSkew, transformOrigin: "center top", ease: Expo.easeOut});
+    gsap.to(this.eyebrow, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.eyebrowSkew, transformOrigin: "center top", ease: Expo.easeOut});
+    gsap.to(this.outerEarL, 1, {x: this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
+    gsap.to(this.outerEarR, 1, {x: this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
+    gsap.to(this.earHairL, 1, {x: -this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
+    gsap.to(this.earHairR, 1, {x: -this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
+    gsap.to(this.hair, 1, {x: this.hairX, scaleY: this.hairS, transformOrigin: "center bottom", ease: Expo.easeOut});
 
     document.body.removeChild(div);
   };
@@ -181,33 +181,33 @@ export class LoginComponent implements AfterViewInit {
     if(this.curEmailIndex > 0) {
       if(this.mouthStatus === "small") {
         this.mouthStatus = "medium";
-        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthMediumBG as any, shapeIndex: 8, ease: Expo.easeOut});
-        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
-        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
-        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        gsap.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthMediumBG as any, shapeIndex: 8, ease: Expo.easeOut});
+        gsap.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        gsap.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        gsap.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
         this.eyeScale = .85;
       }
       if(value.includes("@")) {
         this.mouthStatus = "large";
-        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthLargeBG as any, ease: Expo.easeOut});
-        TweenMax.to(this.tooth, 1, {x: 3, y: -2, ease: Expo.easeOut});
-        TweenMax.to(this.tongue, 1, {y: 2, ease: Expo.easeOut});
-        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .65, scaleY: .65, ease: Expo.easeOut, transformOrigin: "center center"});
+        gsap.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthLargeBG as any, ease: Expo.easeOut});
+        gsap.to(this.tooth, 1, {x: 3, y: -2, ease: Expo.easeOut});
+        gsap.to(this.tongue, 1, {y: 2, ease: Expo.easeOut});
+        gsap.to([this.eyeL, this.eyeR], 1, {scaleX: .65, scaleY: .65, ease: Expo.easeOut, transformOrigin: "center center"});
         this.eyeScale = .65;
       } else {
         this.mouthStatus = "medium";
-        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG:this.mouthMediumBG as any, ease: Expo.easeOut});
-        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
-        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
-        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        gsap.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG:this.mouthMediumBG as any, ease: Expo.easeOut});
+        gsap.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        gsap.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        gsap.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
         this.eyeScale = .85;
       }
     } else {
       this.mouthStatus = "small";
-      TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthSmallBG as any, shapeIndex: 9, ease: Expo.easeOut});
-      TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
-      TweenMax.to(this.tongue, 1, {y: 0, ease: Expo.easeOut});
-      TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: 1, scaleY: 1, ease: Expo.easeOut});
+      gsap.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthSmallBG as any, shapeIndex: 9, ease: Expo.easeOut});
+      gsap.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+      gsap.to(this.tongue, 1, {y: 0, ease: Expo.easeOut});
+      gsap.to([this.eyeL, this.eyeR], 1, {scaleX: 1, scaleY: 1, ease: Expo.easeOut});
       this.eyeScale = 1;
     }
   }
@@ -307,11 +307,11 @@ export class LoginComponent implements AfterViewInit {
   }
 
   spreadFingers() {
-    TweenMax.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
+    gsap.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
   }
 
   closeFingers() {
-    TweenMax.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 0, x: 0, y: 0, ease: Power2.easeInOut});
+    gsap.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 0, x: 0, y: 0, ease: Power2.easeInOut});
   }
 
   coverEyes() {
@@ -322,12 +322,12 @@ export class LoginComponent implements AfterViewInit {
   }
 
   resetFace() {
-    TweenMax.to([this.eyeL, this.eyeR], 1, {x: 0, y: 0, ease: Expo.easeOut});
-    TweenMax.to(this.nose, 1, {x: 0, y: 0, scaleX: 1, scaleY: 1, ease: Expo.easeOut});
-    TweenMax.to(this.mouth, 1, {x: 0, y: 0, rotation: 0, ease: Expo.easeOut});
-    TweenMax.to(this.chin, 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
-    TweenMax.to([this.face, this.eyebrow], 1, {x: 0, y: 0, skewX: 0, ease: Expo.easeOut});
-    TweenMax.to([this.outerEarL, this.outerEarR, this.earHairL, this.earHairR, this.hair], 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
+    gsap.to([this.eyeL, this.eyeR], 1, {x: 0, y: 0, ease: Expo.easeOut});
+    gsap.to(this.nose, 1, {x: 0, y: 0, scaleX: 1, scaleY: 1, ease: Expo.easeOut});
+    gsap.to(this.mouth, 1, {x: 0, y: 0, rotation: 0, ease: Expo.easeOut});
+    gsap.to(this.chin, 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
+    gsap.to([this.face, this.eyebrow], 1, {x: 0, y: 0, skewX: 0, ease: Expo.easeOut});
+    gsap.to([this.outerEarL, this.outerEarR, this.earHairL, this.earHairR, this.hair], 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
   }
 
   startBlinking(delay: number) {
@@ -337,7 +337,7 @@ export class LoginComponent implements AfterViewInit {
   stopBlinking() {
     this.blinking.kill();
     this.blinking = null;
-    TweenMax.set([this.eyeL, this.eyeR], {scaleY: this.eyeScale});
+    gsap.set([this.eyeL, this.eyeR], {scaleY: this.eyeScale});
   }
 
   getRandomInt(max: number) {
@@ -439,11 +439,11 @@ export class LoginComponent implements AfterViewInit {
     this.showPasswordToggle.addEventListener('mousedown', this.onPasswordToggleMouseDown);
 
     // move arms to initial positions
-    TweenMax.set(this.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
-    TweenMax.set(this.armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
+    gsap.set(this.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
+    gsap.set(this.armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
 
     // set initial mouth property (fixes positioning bug)
-    TweenMax.set(this.mouth, {transformOrigin: "center center"});
+    gsap.set(this.mouth, {transformOrigin: "center center"});
 
     // activate blinking
     this.startBlinking(5);
@@ -456,7 +456,7 @@ export class LoginComponent implements AfterViewInit {
     // if (this.isMobileDevice()) {
     //   this.password.type = "text";
     //   this.showPasswordCheck.checked = true;
-    //   TweenMax.set(this.twoFingers, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
+    //   gsap.set(this.twoFingers, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
     // }
   }
 
