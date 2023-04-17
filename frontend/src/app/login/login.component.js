@@ -12,7 +12,7 @@ function initLoginAnimation() {
       copyStyle = getComputedStyle(email),
       caretCoords = {}
     ;
-    if(carPos == null || carPos == 0) {
+    if(carPos == null || carPos === 0) {
       // if browser doesn't support 'selectionEnd' property on input[type="email"], use 'value.length' property instead
       carPos = email.value.length;
     }
@@ -89,7 +89,7 @@ function initLoginAnimation() {
 
     // very crude email validation to trigger effects
     if(curEmailIndex > 0) {
-      if(mouthStatus == "small") {
+      if(mouthStatus === "small") {
         mouthStatus = "medium";
         TweenMax.to([mouthBG, mouthOutline, mouthMaskPath], 1, {morphSVG: mouthMediumBG, shapeIndex: 8, ease: Expo.easeOut});
         TweenMax.to(tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
@@ -272,7 +272,7 @@ function initLoginAnimation() {
   }
 
   function getAngle(x1, y1, x2, y2) {
-    var angle = Math.atan2(y1 - y2, x1 - x2);
+    let angle = Math.atan2(y1 - y2, x1 - x2);
     return angle;
   }
 
@@ -281,7 +281,7 @@ function initLoginAnimation() {
     var yPos = 0;
 
     while (el) {
-      if (el.tagName == "BODY") {
+      if (el.tagName === "BODY") {
         // deal with browser quirks with body/window/document and page scroll
         var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
         var yScroll = el.scrollTop || document.documentElement.scrollTop;

@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import {Expo, gsap, Power2} from 'gsap';
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
-import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import {AfterViewInit, Component} from '@angular/core';
+import {Expo, gsap} from 'gsap';
+import {MorphSVGPlugin} from 'gsap/MorphSVGPlugin';
+import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin';
+import {MotionPathPlugin} from 'gsap/MotionPathPlugin';
 
 gsap.registerPlugin(MorphSVGPlugin, DrawSVGPlugin, MotionPathPlugin);
 
@@ -92,19 +92,86 @@ export class LoginComponent implements AfterViewInit {
   constructor() {}
 
   ngAfterViewInit(): void {
-    this.initLoginAnimation();
-  }
-
-  initLoginAnimation() {
-    this.emailLabel = document.querySelector('#loginEmailLabel')!;
-    this.email = document.querySelector('#loginEmail')!;
-    this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
-    this.password = document.querySelector('#loginPassword')!;
+    this.initLoginForm();
 
   }
 
   calculateFaceMove = (e: Event) => {
-    // Add the code from login.component.js here
+    let carPos = (this.email as HTMLInputElement).selectionEnd,
+      div = document.createElement('div'),
+      span = document.createElement('span'),
+      copyStyle = getComputedStyle(this.email),
+      caretCoords: { x: number; y: number; };
+
+    if (carPos === null || carPos === 0) {
+      carPos = (this.email as HTMLInputElement).value.length;
+    }
+
+    [].forEach.call(copyStyle, (prop: string) => {
+      (div.style as any)[prop] = (copyStyle as any)[prop];
+    });
+
+    div.style.position = 'absolute';
+    document.body.appendChild(div);
+    div.textContent = (this.email as HTMLInputElement).value.substr(0, carPos);
+    span.textContent = (this.email as HTMLInputElement).value.substr(carPos) || '.';
+    div.appendChild(span);
+
+    if(this.email.scrollWidth <= this.emailScrollMax) {
+      caretCoords = this.getPosition(span);
+      this.dFromC = this.screenCenter - (caretCoords.x + this.emailCoords.x);
+      this.eyeLAngle = this.getAngle(this.eyeLCoords.x, this.eyeLCoords.y, this.emailCoords.x + caretCoords.x, this.emailCoords.y + 25);
+      this.eyeRAngle = this.getAngle(this.eyeRCoords.x, this.eyeRCoords.y, this.emailCoords.x + caretCoords.x, this.emailCoords.y + 25);
+      this.noseAngle = this.getAngle(this.noseCoords.x, this.noseCoords.y, this.emailCoords.x + caretCoords.x, this.emailCoords.y + 25);
+      this.mouthAngle = this.getAngle(this.mouthCoords.x, this.mouthCoords.y, this.emailCoords.x + caretCoords.x, this.emailCoords.y + 25);
+    } else {
+      this.eyeLAngle = this.getAngle(this.eyeLCoords.x, this.eyeLCoords.y, this.emailCoords.x + this.emailScrollMax, this.emailCoords.y + 25);
+      this.eyeRAngle = this.getAngle(this.eyeRCoords.x, this.eyeRCoords.y, this.emailCoords.x + this.emailScrollMax, this.emailCoords.y + 25);
+      this.noseAngle = this.getAngle(this.noseCoords.x, this.noseCoords.y, this.emailCoords.x + this.emailScrollMax, this.emailCoords.y + 25);
+      this.mouthAngle = this.getAngle(this.mouthCoords.x, this.mouthCoords.y, this.emailCoords.x + this.emailScrollMax, this.emailCoords.y + 25);
+    }
+
+    this.eyeLX = Math.cos(this.eyeLAngle) * 20;
+    this.eyeLY = Math.sin(this.eyeLAngle) * 10;
+    this.eyeRX = Math.cos(this.eyeRAngle) * 20;
+    this.eyeRY = Math.sin(this.eyeRAngle) * 10;
+    this.noseX = Math.cos(this.noseAngle) * 23;
+    this.noseY = Math.sin(this.noseAngle) * 10;
+    this.mouthX = Math.cos(this.mouthAngle) * 23;
+    this.mouthY = Math.sin(this.mouthAngle) * 10;
+    this.mouthR = Math.cos(this.mouthAngle) * 6;
+    this.chinX = this.mouthX * .8;
+    this.chinY = this.mouthY * .5;
+    this.chinS = 1 - ((this.dFromC * .15) / 100);
+    if(this.chinS > 1) {
+      this.chinS = 1 - (this.chinS - 1);
+      if(this.chinS < this.chinMin) {
+        this.chinS = this.chinMin;
+      }
+    }
+    this.faceX = this.mouthX * .3;
+    this.faceY = this.mouthY * .4;
+    this.faceSkew = Math.cos(this.mouthAngle) * 5;
+    this.eyebrowSkew = Math.cos(this.mouthAngle) * 25;
+    this.outerEarX = Math.cos(this.mouthAngle) * 4;
+    this.outerEarY = Math.cos(this.mouthAngle) * 5;
+    this.hairX = Math.cos(this.mouthAngle) * 6;
+    this.hairS = 1.2;
+
+    TweenMax.to(this.eyeL, 1, {x: -this.eyeLX , y: -this.eyeLY, ease: Expo.easeOut});
+    TweenMax.to(this.eyeR, 1, {x: -this.eyeRX , y: -this.eyeRY, ease: Expo.easeOut});
+    TweenMax.to(this.nose, 1, {x: -this.noseX, y: -this.noseY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
+    TweenMax.to(this.mouth, 1, {x: -this.mouthX , y: -this.mouthY, rotation: this.mouthR, transformOrigin: "center center", ease: Expo.easeOut});
+    TweenMax.to(this.chin, 1, {x: -this.chinX, y: -this.chinY, scaleY: this.chinS, ease: Expo.easeOut});
+    TweenMax.to(this.face, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.faceSkew, transformOrigin: "center top", ease: Expo.easeOut});
+    TweenMax.to(this.eyebrow, 1, {x: -this.faceX, y: -this.faceY, skewX: -this.eyebrowSkew, transformOrigin: "center top", ease: Expo.easeOut});
+    TweenMax.to(this.outerEarL, 1, {x: this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
+    TweenMax.to(this.outerEarR, 1, {x: this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
+    TweenMax.to(this.earHairL, 1, {x: -this.outerEarX, y: -this.outerEarY, ease: Expo.easeOut});
+    TweenMax.to(this.earHairR, 1, {x: -this.outerEarX, y: this.outerEarY, ease: Expo.easeOut});
+    TweenMax.to(this.hair, 1, {x: this.hairX, scaleY: this.hairS, transformOrigin: "center bottom", ease: Expo.easeOut});
+
+    document.body.removeChild(div);
   };
 
   onEmailInput = (e: Event) => {
@@ -188,11 +255,32 @@ export class LoginComponent implements AfterViewInit {
   }
 
   getAngle(x1: number, y1: number, x2: number, y2: number) {
-    // Add the code from login.component.js here
+    return Math.atan2(y1 - y2, x1 - x2);
   }
 
-  getPosition(el: HTMLElement) {
-    // Add the code from login.component.js here
+  getPosition(el: HTMLElement): { x: number; y: number } {
+    let xPos = 0;
+    let yPos = 0;
+
+    while (el) {
+      if (el.tagName === "BODY") {
+        let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+        let yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+        xPos += el.offsetLeft - xScroll + el.clientLeft;
+        yPos += el.offsetTop - yScroll + el.clientTop;
+      } else {
+        xPos += el.offsetLeft - el.scrollLeft + el.clientLeft;
+        yPos += el.offsetTop - el.scrollTop + el.clientTop;
+      }
+
+      el = el.offsetParent as HTMLElement;
+    }
+
+    return {
+      x: xPos,
+      y: yPos
+    };
   }
 
   // isMobileDevice() {
@@ -202,6 +290,11 @@ export class LoginComponent implements AfterViewInit {
   // }
 
   initLoginForm() {
+    // this.emailLabel = document.querySelector('#loginEmailLabel')!;
+    // this.email = document.querySelector('#loginEmail')!;
+    // this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
+    // this.password = document.querySelector('#loginPassword')!;
+
     this.svgCoords = this.getPosition(this.mySVG);
     this.emailCoords = this.getPosition(this.email);
     this.screenCenter = this.svgCoords.x + (this.mySVG.offsetWidth / 2);
