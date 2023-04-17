@@ -133,9 +133,9 @@ function initLoginAnimation() {
   function onEmailBlur(e) {
     activeElement = null;
     setTimeout(function() {
-      if(activeElement == "email") {
+      if(activeElement === "email") {
       } else {
-        if(e.target.value == "") {
+        if(e.target.value === "") {
           e.target.parentElement.classList.remove("focusWithText");
         }
         //startBlinking();
@@ -158,7 +158,7 @@ function initLoginAnimation() {
   function onPasswordBlur(e) {
     activeElement = null;
     setTimeout(function() {
-      if(activeElement == "toggle" || activeElement == "password") {
+      if(activeElement === "toggle" || activeElement === "password") {
       } else {
         uncoverEyes();
       }
@@ -176,7 +176,7 @@ function initLoginAnimation() {
     activeElement = null;
     if(!showPasswordClicked) {
       setTimeout(function() {
-        if(activeElement == "password" || activeElement == "toggle") {
+        if(activeElement === "password" || activeElement === "toggle") {
         } else {
           uncoverEyes();
         }

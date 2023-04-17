@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {Expo, gsap} from 'gsap';
+import {Expo, gsap, Power2} from 'gsap';
 import {MorphSVGPlugin} from 'gsap/MorphSVGPlugin';
 import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin';
 import {MotionPathPlugin} from 'gsap/MotionPathPlugin';
@@ -15,7 +15,7 @@ export class LoginComponent implements AfterViewInit {
   emailLabel!: HTMLElement;
   email!: HTMLElement;
   passwordLabel!: HTMLElement;
-  password!: HTMLElement;
+  password!: HTMLInputElement;
   showPasswordCheck!: HTMLElement;
   showPasswordToggle!: HTMLElement;
   mySVG!: HTMLElement;
@@ -44,8 +44,7 @@ export class LoginComponent implements AfterViewInit {
   hair!: HTMLElement;
   bodyBG!: HTMLElement;
   bodyBGchanged!: HTMLElement;
-
-  activeElement: any;
+  activeElement: string | null = null;
   curEmailIndex: any;
   screenCenter: any;
   svgCoords: any;
@@ -58,7 +57,6 @@ export class LoginComponent implements AfterViewInit {
   eyeScale = 1;
   eyesCovered = false;
   showPasswordClicked = false;
-
   eyeLCoords: any;
   eyeRCoords: any;
   noseCoords: any;
@@ -175,63 +173,148 @@ export class LoginComponent implements AfterViewInit {
   };
 
   onEmailInput = (e: Event) => {
-    // Add the code from login.component.js here
+    this.calculateFaceMove(e);
+    let value = (this.email as HTMLInputElement).value;
+    this.curEmailIndex = value.length;
+
+    // very crude email validation to trigger effects
+    if(this.curEmailIndex > 0) {
+      if(this.mouthStatus === "small") {
+        this.mouthStatus = "medium";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthMediumBG as any, shapeIndex: 8, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        this.eyeScale = .85;
+      }
+      if(value.includes("@")) {
+        this.mouthStatus = "large";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthLargeBG as any, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 3, y: -2, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {y: 2, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .65, scaleY: .65, ease: Expo.easeOut, transformOrigin: "center center"});
+        this.eyeScale = .65;
+      } else {
+        this.mouthStatus = "medium";
+        TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG:this.mouthMediumBG as any, ease: Expo.easeOut});
+        TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+        TweenMax.to(this.tongue, 1, {x: 0, y: 1, ease: Expo.easeOut});
+        TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: .85, scaleY: .85, ease: Expo.easeOut});
+        this.eyeScale = .85;
+      }
+    } else {
+      this.mouthStatus = "small";
+      TweenMax.to([this.mouthBG, this.mouthOutline, this.mouthMaskPath], 1, {morphSVG: this.mouthSmallBG as any, shapeIndex: 9, ease: Expo.easeOut});
+      TweenMax.to(this.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
+      TweenMax.to(this.tongue, 1, {y: 0, ease: Expo.easeOut});
+      TweenMax.to([this.eyeL, this.eyeR], 1, {scaleX: 1, scaleY: 1, ease: Expo.easeOut});
+      this.eyeScale = 1;
+    }
   }
 
   onEmailFocus = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = "email";
+    const target = e.target as HTMLElement;
+    const parentElement = target.parentElement;
+    if (parentElement) {
+      parentElement.classList.add("focusWithText");
+    }
+    this.onEmailInput(e);
   };
 
   onEmailBlur = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = null;
+    setTimeout(() => {
+      if (this.activeElement === "email") {
+      } else {
+        const target = e.target as HTMLInputElement;
+        const parentElement = target.parentElement;
+        if (target.value === "" && parentElement) {
+          parentElement.classList.remove("focusWithText");
+        }
+        // startBlinking();
+        this.resetFace();
+      }
+    }, 100);
   };
 
   onEmailLabelClick = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = "email";
   }
 
   onPasswordFocus = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = "password";
+    if(!this.eyesCovered) {
+      this.coverEyes();
+    }
   };
 
   onPasswordBlur = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = null;
+    setTimeout(() => {
+      if (this.activeElement === "toggle" || this.activeElement === "password") {
+      } else {
+        this.uncoverEyes();
+      }
+    }, 100);
   };
 
   onPasswordToggleFocus = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = "toggle";
+    if(!this.eyesCovered) {
+      this.coverEyes();
+    }
   };
 
   onPasswordToggleBlur = (e: Event) => {
-    // Add the code from login.component.js here
+    this.activeElement = null;
+    if (!this.showPasswordClicked) {
+      setTimeout(() => {
+        if (this.activeElement === "password" || this.activeElement === "toggle") {
+        } else {
+          this.uncoverEyes();
+        }
+      }, 100);
+    }
   };
 
   onPasswordToggleMouseDown = (e: Event) => {
-    // Add the code from login.component.js here
+    this.showPasswordClicked = true;
   }
 
   onPasswordToggleMouseUp = (e: Event) => {
-    // Add the code from login.component.js here
+    this.showPasswordClicked = false;
   }
 
   onPasswordToggleChange = (e: Event) => {
-    // Add the code from login.component.js here
-  }
+    setTimeout(() => {
+      // if checkbox is checked, show password
+      if ((e.target as HTMLInputElement).checked) {
+        this.password.type = "text";
+        this.spreadFingers();
+
+        // if checkbox is off, hide password
+      } else {
+        this.password.type = "password";
+        this.closeFingers();
+      }
+    }, 100);
+  };
 
   onPasswordToggleClick = (e: Event) => {
-    // Add the code from login.component.js here
+    //console.log("click: " + e.target.id);
+    (e.target as HTMLInputElement).focus();
   }
 
   spreadFingers() {
-    // Add the code from login.component.js here
+    TweenMax.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
   }
 
   closeFingers() {
-    // Add the code from login.component.js here
+    TweenMax.to(this.twoFingers, .35, {transformOrigin: "bottom left", rotation: 0, x: 0, y: 0, ease: Power2.easeInOut});
   }
 
   coverEyes() {
-    // Add the code from login.component.js here
   }
 
   uncoverEyes() {
@@ -239,7 +322,12 @@ export class LoginComponent implements AfterViewInit {
   }
 
   resetFace() {
-    // Add the code from login.component.js here
+    TweenMax.to([this.eyeL, this.eyeR], 1, {x: 0, y: 0, ease: Expo.easeOut});
+    TweenMax.to(this.nose, 1, {x: 0, y: 0, scaleX: 1, scaleY: 1, ease: Expo.easeOut});
+    TweenMax.to(this.mouth, 1, {x: 0, y: 0, rotation: 0, ease: Expo.easeOut});
+    TweenMax.to(this.chin, 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
+    TweenMax.to([this.face, this.eyebrow], 1, {x: 0, y: 0, skewX: 0, ease: Expo.easeOut});
+    TweenMax.to([this.outerEarL, this.outerEarR, this.earHairL, this.earHairR, this.hair], 1, {x: 0, y: 0, scaleY: 1, ease: Expo.easeOut});
   }
 
   startBlinking(delay: number) {
@@ -247,11 +335,13 @@ export class LoginComponent implements AfterViewInit {
   }
 
   stopBlinking() {
-    // Add the code from login.component.js here
+    this.blinking.kill();
+    this.blinking = null;
+    TweenMax.set([this.eyeL, this.eyeR], {scaleY: this.eyeScale});
   }
 
   getRandomInt(max: number) {
-    // Add the code from login.component.js here
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
   getAngle(x1: number, y1: number, x2: number, y2: number) {
@@ -290,10 +380,36 @@ export class LoginComponent implements AfterViewInit {
   // }
 
   initLoginForm() {
-    // this.emailLabel = document.querySelector('#loginEmailLabel')!;
-    // this.email = document.querySelector('#loginEmail')!;
-    // this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
-    // this.password = document.querySelector('#loginPassword')!;
+    this.emailLabel = document.querySelector('#loginEmailLabel')!;
+    this.email = document.querySelector('#loginEmail')!;
+    this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
+    this.password = document.querySelector('#loginPassword')!;
+    this.showPasswordCheck = document.querySelector('#showPassword')!;
+    this.showPasswordToggle = document.querySelector('#showPasswordToggle')!;
+    this.mySVG = document.querySelector('.svgContainer')!;
+    this.twoFingers = document.querySelector('.twoFingers')!;
+    this.armL = document.querySelector('.armL')!;
+    this.armR = document.querySelector('.armR')!;
+    this.eyeL = document.querySelector('.eyeL')!;
+    this.eyeR = document.querySelector('.eyeR')!;
+    this.nose = document.querySelector('.nose')!;
+    this.mouth = document.querySelector('.mouth')!;
+    this.mouthBG = document.querySelector('.mouthBG')!;
+    this.mouthSmallBG = document.querySelector('.mouthSmallBG')!;
+    this.mouthMediumBG = document.querySelector('.mouthMediumBG')!;
+    this.mouthLargeBG = document.querySelector('.mouthLargeBG')!;
+    this.mouthMaskPath = document.querySelector('#mouthMaskPath')!;
+    this.mouthOutline = document.querySelector('.mouthOutline')!;
+    this.tooth = document.querySelector('.tooth')!;
+    this.tongue = document.querySelector('.tongue')!;
+    this.chin = document.querySelector('.chin')!;
+    this.face = document.querySelector('.face')!;
+    this.eyebrow = document.querySelector('.eyebrow')!;
+    this.outerEarL = document.querySelector('.earL .outerEar')!;
+    this.outerEarR = document.querySelector('.earR .outerEar')!;
+    this.hair = document.querySelector('.hair')!;
+    this.bodyBG = document.querySelector('.bodyBGnormal')!;
+    this.bodyBGchanged = document.querySelector('.bodyBGchanged')!;
 
     this.svgCoords = this.getPosition(this.mySVG);
     this.emailCoords = this.getPosition(this.email);
