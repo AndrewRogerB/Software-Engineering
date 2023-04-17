@@ -91,7 +91,6 @@ export class LoginComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initLoginForm();
-
   }
 
   calculateFaceMove = (e: Event) => {
@@ -479,6 +478,7 @@ export class LoginComponent implements AfterViewInit {
     // determine how far email input can go before scrolling occurs
     // will be used as the furthest point avatar will look to the right
     this.emailScrollMax = this.email.scrollWidth;
+
 
     // check if we're on mobile/tablet, if so then show password initially
     // if (this.isMobileDevice()) {

@@ -103,14 +103,34 @@
 
   <div class="inputGroup inputGroup1">
     <label for="loginEmail" id="loginEmailLabel">Email</label>
-    <input type="email" id="loginEmail" maxlength="254" />
+    <input
+      id="loginEmail"
+      type="text"
+      class="FormField"
+      #email
+      (input)="onEmailInput($event)"
+      (focus)="onEmailFocus($event)"
+      (blur)="onEmailBlur($event)"
+    />
     <p class="helper helper1">email@domain.com</p>
   </div>
   <div class="inputGroup inputGroup2">
     <label for="loginPassword" id="loginPasswordLabel">Password</label>
-    <input type="password" id="loginPassword" />
+    <input
+      id="loginPassword"
+      type="password"
+      class="PasswordField"
+      #password
+      (focus)="onPasswordFocus($event)"
+      (blur)="onPasswordBlur($event)"
+    />
     <label id="showPasswordToggle" for="showPasswordCheck">Show
-      <input id="showPasswordCheck" type="checkbox"/>
+      <input
+        type="checkbox"
+        id="showPasswordCheck"
+        class="loginCheckbox"
+        (change)="onPasswordToggleChange($event)"
+      />
       <div class="indicator"></div>
     </label>
   </div>
