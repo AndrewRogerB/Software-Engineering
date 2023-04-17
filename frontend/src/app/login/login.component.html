@@ -114,11 +114,14 @@
     <label for="loginPassword" id="loginPasswordLabel">Password</label>
     <input type="password" id="loginPassword" />
     <label id="showPasswordToggle" for="showPasswordCheck">Show
-      <input id="showPasswordCheck" type="checkbox"/>
+      <input id="showPasswordCheck" type="checkbox" (change)="onPasswordToggleChange($event)" />
       <div class="indicator"></div>
     </label>
   </div>
   <div class="inputGroup inputGroup3">
     <button id="login">Log in</button>
+  </div>
+  <div class="inputGroup inputGroup4">
+    <p class="helper helper2">Forgot your password?</p>
   </div>
 </form>

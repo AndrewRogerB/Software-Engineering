@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {Expo, gsap, Power2, Quad} from 'gsap';
 import {MorphSVGPlugin} from 'gsap/MorphSVGPlugin';
 import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin';
@@ -17,7 +17,7 @@ export class LoginComponent implements AfterViewInit {
   passwordLabel!: HTMLElement;
   password!: HTMLInputElement;
   showPasswordCheck!: HTMLElement;
-  showPasswordToggle!: HTMLElement;
+  @ViewChild('showPasswordToggle', { static: true }) showPasswordToggle!: ElementRef<HTMLInputElement>;
   mySVG!: HTMLElement;
   twoFingers!: HTMLElement;
   armL!: HTMLElement;
@@ -85,6 +85,7 @@ export class LoginComponent implements AfterViewInit {
   outerEarY: any;
   hairX: any;
   hairS: any;
+
 
 
   constructor() {}
@@ -288,7 +289,7 @@ export class LoginComponent implements AfterViewInit {
   onPasswordToggleChange = (e: Event) => {
     setTimeout(() => {
       // if checkbox is checked, show password
-      if ((e.target as HTMLInputElement).checked) {
+      if (this.showPasswordToggle.nativeElement.checked) {
         this.password.type = "text";
         this.spreadFingers();
 
@@ -412,7 +413,7 @@ export class LoginComponent implements AfterViewInit {
     this.passwordLabel = document.querySelector('#loginPasswordLabel')!;
     this.password = document.querySelector('#loginPassword')!;
     this.showPasswordCheck = document.querySelector('#showPassword')!;
-    this.showPasswordToggle = document.querySelector('#showPasswordToggle')!;
+    this.showPasswordToggle.nativeElement = document.querySelector('#showPasswordToggle')!;
     this.mySVG = document.querySelector('.svgContainer')!;
     this.twoFingers = document.querySelector('.twoFingers')!;
     this.armL = document.querySelector('.armL')!;
@@ -462,8 +463,8 @@ export class LoginComponent implements AfterViewInit {
     this.showPasswordCheck.addEventListener('focus', this.onPasswordToggleFocus);
     this.showPasswordCheck.addEventListener('blur', this.onPasswordToggleBlur);
     this.showPasswordCheck.addEventListener('click', this.onPasswordToggleClick);
-    this.showPasswordToggle.addEventListener('mouseup', this.onPasswordToggleMouseUp);
-    this.showPasswordToggle.addEventListener('mousedown', this.onPasswordToggleMouseDown);
+    this.showPasswordToggle.nativeElement.addEventListener('mouseup', this.onPasswordToggleMouseUp);
+    this.showPasswordToggle.nativeElement.addEventListener('mousedown', this.onPasswordToggleMouseDown);
 
     // move arms to initial positions
     gsap.set(this.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
@@ -487,7 +488,4 @@ export class LoginComponent implements AfterViewInit {
     //   gsap.set(this.twoFingers, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
     // }
   }
-
-
-  // Add the updated methods from login.component.js
 }
