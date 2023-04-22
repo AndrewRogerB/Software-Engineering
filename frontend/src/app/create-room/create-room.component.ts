@@ -4,13 +4,14 @@ import { first } from "rxjs/operators";
 import { Room } from "src/app/models/Room";
 import { AuthService } from "src/app/services/auth.service";
 import { RoomService } from "src/app/services/room.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-create-room',
   templateUrl: './create-room.component.html',
   styleUrls: ['./create-room.component.css']
 })
-export class CreateRoomComponent implements OnInit {
+export class CreateRoomComponent implements OnInit{
   @ViewChild("formDirective") formDirective: NgForm;
   @Output() create: EventEmitter<any> = new EventEmitter();
 
@@ -19,7 +20,7 @@ export class CreateRoomComponent implements OnInit {
 
   isOpen = false;
 
-  constructor(private authService: AuthService, private roomService: RoomService) {}
+  constructor(private authService: AuthService, private roomService: RoomService, private router: Router) {}
 
   ngOnInit(): void {
     this.roomForm = this.createFormGroup();
@@ -43,16 +44,16 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onSubmit(formData: Pick<Room, "topic" | "timeO" | "stance">): void {
-
+    console.log(this.authService.userId)
     this.roomService
-      .createPost(formData, this.authService.userId)
+      .createPost(formData, this.authService.userName)
       .pipe(first())
       .subscribe(() => {
         this.create.emit(null);
       });
     this.roomForm.reset();
     this.formDirective.resetForm();
-
+    this.router.navigate(["home"]);
   }
 
 }

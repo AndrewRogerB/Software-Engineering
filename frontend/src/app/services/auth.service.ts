@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from "@angular/common/http";
 import { Router } from "@angular/router";
+import jwt_decode from 'jwt-decode';
 
 import {User} from "../models/User";
 import {Observable, BehaviorSubject} from "rxjs";
@@ -15,6 +16,7 @@ export class AuthService {
 
   isUserLoggedIn$ = new BehaviorSubject<boolean>(false);
   userId: Pick<User, "id">;
+  userName: Pick<User, "name">;
   httpOptions: {headers: HttpHeaders} ={
     headers: new HttpHeaders({"Content-Type": "application/json"}),
   };
@@ -34,8 +36,9 @@ export class AuthService {
   ): Observable<{
     token: string;
     userId: Pick<User, "id">;
+    userName: Pick<User, "name">;
   }> {
-    return this.http.post<{ token: string; userId: Pick<User, "id"> }>(
+    return this.http.post<{ token: string; userId: Pick<User, "id">; userName: Pick<User, "name">}>(
       `${this.url}/login`,
       { email, password },
       this.httpOptions
@@ -43,6 +46,13 @@ export class AuthService {
       first(),
       tap((tokenObject) => {
         this.userId = tokenObject.userId;
+        let decodedToken: any;
+        try {
+          decodedToken = jwt_decode(tokenObject.token) as any;
+        } catch (err) {
+          // handle error
+        }
+        this.userName = decodedToken.userName as Pick<User, "name">;
         localStorage.setItem("token", tokenObject.token);
         this.isUserLoggedIn$.next(true);
         this.router.navigate(["home"]);
@@ -51,6 +61,7 @@ export class AuthService {
         this.errorHandlerService.handleError<{
           token: string;
           userId: Pick<User, "id">;
+          userName: Pick<User, "name">;
         }>("login")
       )
     );
