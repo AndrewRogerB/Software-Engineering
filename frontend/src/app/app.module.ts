@@ -19,6 +19,7 @@ import {MatCardModule} from '@angular/material/card';
 import { RecoveryComponent } from './recovery/recovery.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatRadioModule} from '@angular/material/radio';
+import { ChatroomComponent } from './chatroom/chatroom.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {MatRadioModule} from '@angular/material/radio';
     RegisterComponent,
     RecoveryComponent,
     CreateRoomComponent,
+    ChatroomComponent,
   ],
   imports: [
     BrowserModule,

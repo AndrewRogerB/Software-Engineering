@@ -17,7 +17,7 @@ export class CreateRoomComponent implements OnInit{
 
   roomForm: FormGroup;
   isAuthenticated = false;
-
+  currentRoom = 0;
   isOpen = false;
 
   constructor(private authService: AuthService, private roomService: RoomService, private router: Router) {}
@@ -27,6 +27,10 @@ export class CreateRoomComponent implements OnInit{
     this.authService.isUserLoggedIn$.subscribe((isLoggedIn) => {
       this.isAuthenticated = isLoggedIn;
     });
+  }
+
+  setRoom(id: number){
+    this.currentRoom = id;
   }
 
   createFormGroup(): FormGroup {
@@ -44,16 +48,16 @@ export class CreateRoomComponent implements OnInit{
   }
 
   onSubmit(formData: Pick<Room, "topic" | "timeO" | "stance">): void {
-    console.log(this.authService.userId)
     this.roomService
       .createPost(formData, this.authService.userName)
       .pipe(first())
-      .subscribe(() => {
+      .subscribe((response) => { // Access the id value from the response JSON object
+        const id = response.id;
+        this.router.navigate(['/chatroom', id]);
         this.create.emit(null);
       });
     this.roomForm.reset();
     this.formDirective.resetForm();
-    this.router.navigate(["home"]);
   }
 
 }

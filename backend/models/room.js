@@ -1,5 +1,6 @@
 const db = require('../util/database');
 
+
 module.exports = class Room {
     constructor(topic, creator, player, stance, timeO) {
         this.topic = topic;
@@ -25,11 +26,11 @@ module.exports = class Room {
         })
     }
 
-    static async findName(id){
+    static async findID(room){
         return new Promise(async (resolve, reject) => {
-            console.log("wqwd")
             const connection = await db;
-            let sql = `SELECT name FROM equals.users WHERE id = "${id}"`;
+            console.log("ID")
+            let sql = `SELECT id FROM equals.rooms WHERE topic = "${room.topic}" and creator = "${room.creator}" and stance = "${room.stance}" and timeO = "${room.timeO}";`;
 
             connection.query(sql, (err, rows) => {
                 if (err){

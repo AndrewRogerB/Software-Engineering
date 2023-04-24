@@ -5,6 +5,7 @@ import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {RecoveryComponent} from "./recovery/recovery.component";
 import {CreateRoomComponent} from "./create-room/create-room.component";
+import {ChatroomComponent} from "./chatroom/chatroom.component";
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'register', component:RegisterComponent},
   {path: 'recovery', component:RecoveryComponent},
   {path: 'create', component:CreateRoomComponent},
+  {path: 'chatroom/:id', component:ChatroomComponent},
   {path: '**', redirectTo: ""},
 ];
 

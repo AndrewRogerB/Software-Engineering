@@ -40,6 +40,7 @@
       <button
         *ngIf="isAuthenticated"
         style="background-color: #66FF66; border-color:whitesmoke; color:white;"
+        [routerLink]="['/chatroom', room.id]"
         mat-raised-button type="submit">
         1/2 Join
       </button>

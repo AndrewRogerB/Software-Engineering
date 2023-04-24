@@ -18,7 +18,6 @@ exports.fetchAll = async (req, res, next) => {
 
 exports.postRoom = async (req, res, next) => {
     const errors = validationResult(req);
-    console.log("controllers")
 
     if (!errors.isEmpty()) {
         console.log(errors.array());
@@ -42,7 +41,9 @@ exports.postRoom = async (req, res, next) => {
         };
         const result = await Room.save(room);
 
-        res.status(201).json({ message: 'Posted!' });
+        const idResult = await Room.findID(room)
+
+        res.status(201).json({ message: 'Posted!', id: idResult[0].id }); // Include the id value in the response JSON object
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
